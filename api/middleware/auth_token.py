@@ -20,7 +20,8 @@ def encode_auth_token(user_id):
 
         return jwt.encode(
             payload,
-            os.getenv('JWT_SECRET_KEY')
+            os.getenv('JWT_SECRET_KEY'),
+            algorithm='HS256'
         )
     except Exception as e:
         return e
@@ -43,4 +44,5 @@ def decode_auth_token(func):
             return 'Invalid token. Please log in again.'
 
         return func()
+    return wrapper
         
