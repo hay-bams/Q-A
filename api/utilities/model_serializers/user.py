@@ -28,3 +28,20 @@ class UserSchema(Schema):
     @post_load
     def make_user(self, data):
         return User()
+
+
+class UserSigninSchema(Schema):
+    email = fields.Email(required=True, 
+                         validate=string_length_0_validator,
+                         error_messages={
+                            'required': 'Email is required'
+                         })
+    password = fields.String(required=True, 
+                             validate=string_length_0_validator,
+                             error_messages={
+                               'required': 'Password is required'
+                             })
+
+    @post_load
+    def make_user(self, data):
+        return User()
