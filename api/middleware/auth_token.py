@@ -5,6 +5,8 @@ from functools import wraps
 import jwt
 from flask import request
 
+from api.middleware.base_validator import ValidationError
+
 
 def encode_auth_token(user_id):
     """
@@ -36,6 +38,9 @@ def decode_auth_token(func):
         :return: integer|string
         """
         auth_token = request.headers.get('x-access-token')
+        if not auth_token:
+            raise ValidationError('Authorization failed, Token is required', 400)
+
         try:
             payload = jwt.decode(auth_token,  os.getenv('JWT_SECRET_KEY'))
         except jwt.ExpiredSignatureError:

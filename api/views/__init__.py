@@ -1,1 +1,2 @@
-from .user import UserResource
+from .user import UserSignup
+from .user import UserSignin
