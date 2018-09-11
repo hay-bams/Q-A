@@ -12,7 +12,6 @@ from api.middleware.auth_token import decode_auth_token
 from api.middleware.base_validator import ValidationError
 
 
-
 @api.route('/auth/signup')
 class UserSignup(Resource):
     def post(self):

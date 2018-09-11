@@ -8,6 +8,7 @@ class User(AuditableBaseModel, ModelOperations):
     last_name = db.Column(db.String(50))
     email = db.Column(db.String(100))
     password = db.Column(db.String(50))
+    questions = db.relationship('Question', backref='user')
 
     def __repr__(self):
         return '<User {}>'.format(self.first_name)
