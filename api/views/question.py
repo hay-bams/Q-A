@@ -34,5 +34,16 @@ class QuestionResource(Resource):
             'message': 'question added successfully',
             'data': result
         }
+
+    def get(self):
+        questions = Question.query_().all()
+        schema = QuestionSchema(many=True)
+        questions = schema.dump(questions)
+
+        return {
+            'success': 'true',
+            'message': 'questions retrieved successfully',
+            'questions': questions
+        }
         
         
