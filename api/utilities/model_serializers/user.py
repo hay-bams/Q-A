@@ -1,6 +1,7 @@
 from marshmallow import Schema, fields, post_load
-from api.models.user import User
+
 from ..validators.str_length_validator import string_length_0_validator
+from api.models.user import User
 
 
 class UserSchema(Schema):

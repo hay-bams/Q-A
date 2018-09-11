@@ -15,9 +15,9 @@ def encode_auth_token(user_id):
     """
     try:
         payload = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=5),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1, minutes=10),
             'iat': datetime.datetime.utcnow(),
-            'sub': user_id
+            'id': user_id
         }
 
         return jwt.encode(
@@ -39,15 +39,16 @@ def decode_auth_token(func):
         """
         auth_token = request.headers.get('x-access-token')
         if not auth_token:
-            raise ValidationError('Authorization failed, Token is required', 400)
+            raise ValidationError({'error': 'Authorization failed, Token is required'}, 400)
 
         try:
-            payload = jwt.decode(auth_token,  os.getenv('JWT_SECRET_KEY'))
+            decoded_token = jwt.decode(auth_token,  os.getenv('JWT_SECRET_KEY'))
         except jwt.ExpiredSignatureError:
             return 'Signature expired. Please log in again.'
         except jwt.InvalidTokenError:
             return 'Invalid token. Please log in again.'
 
-        return func()
+        setattr(request, 'decoded_token', decoded_token)
+        return func(*args, **kwargs)
     return wrapper
         

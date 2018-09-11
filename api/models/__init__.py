@@ -1,6 +1,7 @@
 from sqlalchemy import event
 
 from .user import User
+from .question import Question
 from .push_id import PushID
 
 
@@ -12,7 +13,7 @@ def fancy_id_generator(mapper, connection, target):
 
 # associate the listener function with models, to execute during the
 # "before_insert" event
-tables = [User]
+tables = [User, Question]
 
 for table in tables:
     event.listen(table, 'before_insert', fancy_id_generator)
