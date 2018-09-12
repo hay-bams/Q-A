@@ -30,10 +30,11 @@ class ModelOperations():
     def query_(cls):
         return cls.query
 
+    @classmethod
+    def delete(cls, model):
+        db.session.delete(model)
+        db.session.commit()
 
-    def delete(cls, id):
-        db.session.delete(id)
-        
-
+    @classmethod
     def count(cls):
         return cls.query.count()
