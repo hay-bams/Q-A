@@ -27,12 +27,12 @@ class QuestionResource(Resource):
         user = User.get(user_id)
         new_question = Question(**question, user=user)
         new_question.save()
-        result = schema.dump(new_question)
+        question = schema.dump(new_question)
 
         return {
             'success': 'true',
             'message': 'question added successfully',
-            'data': result
+            'question': question
         }
 
     def get(self):
@@ -46,4 +46,40 @@ class QuestionResource(Resource):
             'questions': questions
         }
         
+
+@api.route('/questions/<string:questionId>')
+class SingleQuestion(Resource):
+    def get(self, questionId):
+        question = Question.get(questionId)
+
+        if not question:
+            return {
+                'success': 'false',
+                'message': 'questions does not exist'
+            }
+
+        schema = QuestionSchema()
+        question = schema.dump(question)
         
+        return {
+            'success': 'true',
+            'message': 'question retrieved successfully',
+            'question': question
+        }
+
+    def delete(self, questionId):
+        question = Question.get(questionId)
+
+        if not question:
+            return {
+                'success': 'false',
+                'message': 'questions does not exist'
+            }
+
+        Question.delete(question)
+        
+        return {
+            'success': 'true',
+            'message': 'question deleted successfully'
+        }
+
